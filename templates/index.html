@@ -48,7 +48,7 @@
   ${drink.description}
 </p>
 <div style="display: flex; flex-direction: row; justify-content: flex-end;">
-  <button class='outlook-menu__make-btn' onClick="openModal">Make</button>
+  <button class='outlook-menu__make-btn' data-drink-name="${drink.name}">Make</button>
 </div>
 </div>
 </div>
@@ -65,15 +65,19 @@
     const MENU = JSON.parse(`{{ menu | tojson }}`);
     var MODAL = document.getElementById("make-modal");
     // close modal by removing the open class
+    var currentMakeName = '';
+
     var closeModal = () => {
       if (MODAL.classList.contains("open")) {
         MODAL.classList.remove("open");
       }
+      currentMakeName = '';
     };
 
     // open modal by adding the open class
-    var openModal = function () {
+    var openModal = function (drink) {
       if (!MODAL.classList.contains("open")) {
+        currentMakeName = drink;
         MODAL.classList.add("open");
       }
       const level1 = document.getElementById('level-1');
@@ -95,7 +99,13 @@
 
     // add event listener for all buttons
     for (let i = 0; i < buttons.length; i++) {
-      buttons[i].addEventListener("click", openModal);
+      buttons[i].addEventListener("click", () => {
+        
+        // get button attribute data-drink-name
+        const drinkName = buttons[i].getAttribute("data-drink-name");
+        openModal(drinkName);
+
+      });
     }
 
     const MODAL_EXIT = document.getElementsByClassName("modal-exit");
@@ -120,7 +130,7 @@
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          drink: 'mocha'
+          drink: MENU.drinks.find(drink => drink.name === currentMakeName)
         })
       });
       closeModal();
