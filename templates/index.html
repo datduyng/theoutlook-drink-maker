@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div class="container">
+      <div class="outlook-menu">
+        <div class="outlook-menu__header">
+          <h3 class="outlook-menu__title">The Outlook Drink Menu</h3>
+          <br />
+          <!-- <h3 class="outlook-menu__title">The Outlook</h3> -->
+        </div>
+        <div id="outlook-menu-items" class="outlook-menu__items"></div>
+      </div>
+    </div>
+  </body>
+  <style>
+    /**
+     * Computes a CSS calc function that betweens a value from
+     * A to B over viewport-width A to viewport-width B.
+     * Requires a media query to cap the value at B.
+     */
+    .container {
+      max-width: 980px;
+      margin: auto;
+    }
+
+    body {
+      font-family: "Open Sans", sans-serif;
+      background: #f0f0f0;
+    }
+
+    .outlook-menu {
+      background: white;
+      margin-top: 50px;
+      padding: 15px;
+      padding-top: 30px;
+      overflow: hidden;
+    }
+    @media (max-width: 767px) {
+      .outlook-menu {
+        padding-top: calc(-29.689119171px + 7.7720207254vw);
+      }
+    }
+    @media (max-width: 575px) {
+      .outlook-menu {
+        padding-top: 15px;
+      }
+    }
+    .outlook-menu__header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+    @media (max-width: 767px) {
+      .outlook-menu__header {
+        margin-bottom: calc(-118.9637305699px + 25.9067357513vw);
+      }
+    }
+    @media (max-width: 575px) {
+      .outlook-menu__header {
+        margin-bottom: 30px;
+      }
+    }
+    .outlook-menu__title {
+      font-size: 30px;
+      font-family: "Slabo 27px", serif;
+      margin: 0;
+      display: inline-block;
+      position: relative;
+    }
+    .outlook-menu__title:after {
+      content: "";
+      position: absolute;
+      bottom: 0px;
+      width: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom: 2px solid black;
+    }
+    @media (max-width: 575px) {
+      .outlook-menu__title {
+        font-size: 25px;
+      }
+    }
+    .outlook-menu__item {
+      display: flex;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    @media (max-width: 767px) {
+      .outlook-menu__item {
+        padding-left: calc(-44.921875px + 7.8125vw);
+        padding-right: calc(-44.921875px + 7.8125vw);
+      }
+    }
+    @media (max-width: 575px) {
+      .outlook-menu__item {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+    .outlook-menu__item-media {
+      margin-right: 15px;
+    }
+    /* @media (max-width: 575px) {
+          .outlook-menu__item-media {
+            display: none;
+          }
+        } */
+    .outlook-menu__item-info {
+      flex: auto;
+    }
+    .outlook-menu__item-title {
+      position: relative;
+      margin: 0;
+      font-size: 22px;
+    }
+    .outlook-menu__item-name {
+      background: #fff;
+      z-index: 1;
+      position: relative;
+    }
+    .outlook-menu__item-dots {
+      height: 3px;
+      display: block;
+      position: absolute;
+      width: 100%;
+      bottom: 5px;
+      background-image: radial-gradient(
+        circle closest-side,
+        #ccc 80%,
+        #fff 10%
+      );
+      background-position: bottom;
+      background-position-x: center;
+      background-position-y: bottom;
+      background-size: 4px 2px;
+      background-repeat: repeat-x;
+    }
+    .outlook-menu__item-price {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+    }
+    .outlook-menu__item-description {
+      font-size: 18px;
+    }
+
+    .outlook-menu__make-btn {
+      outline: none;
+      height: 40px;
+      text-align: center;
+      width: 130px;
+      border-radius: 40px;
+      background: #fff;
+      border: 2px solid #1ecd97;
+      color: #1ecd97;
+      letter-spacing: 1px;
+      text-shadow: 0;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .outlook-menu__make-btn:hover {
+      color: white;
+      background: #1ecd97;
+    }
+    .outlook-menu__make-btn:active {
+      letter-spacing: 2px;
+    }
+    /* .outlook-menu__make-btn:after {
+      content: "SUBMIT";
+    } */
+  </style>
+
+  <script>
+    const MenuItemTemplate = (drink) => {
+      const template = `
+<div class="outlook-menu__item">
+<div class="outlook-menu__item-media">
+<img src="${drink.image}" alt="" />
+</div>
+<div class="outlook-menu__item-info">
+<h4 class="outlook-menu__item-title">
+  <span class="outlook-menu__item-name">${drink.name}</span>
+  <span class="outlook-menu__item-dots"></span>
+</h4>
+<p class="resaurant-menu__description">
+  ${drink.description}
+</p>
+<div style="display: flex; flex-direction: row; justify-content: flex-end;">
+  <button class='outlook-menu__make-btn'>Make</button>
+</div>
+</div>
+</div>
+`;
+
+      return template;
+    };
+  </script>
+  <script>
+    const MENU = JSON.parse(`{{ menu | tojson }}`);
+
+    const MENU_ITEMS = document.getElementById("outlook-menu-items");
+    console.log("MENU", MENU_ITEMS);
+
+    console.log("MENU", MENU);
+    for (let drink of MENU.drinks) {
+      console.log(drink);
+      MENU_ITEMS.insertAdjacentHTML("afterend", MenuItemTemplate(drink));
+    }
+  </script>
+</html>
